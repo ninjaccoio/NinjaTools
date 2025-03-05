@@ -3,13 +3,86 @@
     x:Class="NinjaTools.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sc="clr-namespace:NinjaTools.Modules.SoundCloudPlayer.Views"
+    xmlns:yt="clr-namespace:NinjaTools.Modules.YouTubeDownloader.Views"
     xmlns:local="clr-namespace:NinjaTools"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutBackgroundColor="#1f1f1f"
+    FlyoutWidth="300"
     Title="NinjaTools">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Template personalizzato per l'header del Flyout -->
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="#121212" Padding="20" HeightRequest="180">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
+                <Image Source="ninja_logo.png" 
+                       HeightRequest="100" 
+                       WidthRequest="100"
+                       HorizontalOptions="Center" />
+
+                <Label Grid.Row="1" 
+                       Text="NinjaTools" 
+                       FontSize="24" 
+                       TextColor="White" 
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,0" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+    <!-- Template personalizzato per ogni elemento del menu -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="15,10" ColumnSpacing="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding FlyoutIcon}" 
+                       WidthRequest="30" 
+                       HeightRequest="30" />
+
+                <Label Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       FontSize="16" 
+                       TextColor="White"
+                       VerticalOptions="Center" />
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#3F3F3F" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <!-- Item concreti del menu Flyout -->
+    <FlyoutItem Title="Home" FlyoutIcon="home_icon.png" Route="HomePage">
+        <ShellContent ContentTemplate="{DataTemplate local:HomePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="YouTube Downloader" FlyoutIcon="youtube_icon.png" Route="YoutubeDownloaderPage">
+        <ShellContent ContentTemplate="{DataTemplate yt:MainPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="SoundCloud Player" FlyoutIcon="soundcloud_icon.png" Route="SoundCloudPlayerPage">
+        <ShellContent ContentTemplate="{DataTemplate sc:MainPage}" />
+    </FlyoutItem>
 </Shell>
